@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <title>用户权限管理系统 - 主页</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Microsoft YaHei", Arial, sans-serif; display: flex; flex-direction: column; height: 100vh; background: #eee; }
+
+    /* 頂部 */
+    .header {
+      height: 80px; background: #ec4e00; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 30px; flex-shrink: 0;
+    }
+    .header .logo { color: #fff; font-size: 22px; font-weight: bold; letter-spacing: 2px; }
+    .header .user-info { display: flex; align-items: center; gap: 12px; }
+    .header .user-info span { color: #fff; font-size: 18px; }
+    .header .user-info a {
+      color: #fff; font-size: 16px; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.6); padding: 4px 14px; border-radius: 4px;
+    }
+    .header .user-info a:hover { background: rgba(255,255,255,0.2); }
+
+    /* 主體 */
+    .main { display: flex; flex: 1; overflow: hidden; }
+
+    /* 左側選單 */
+    .sidebar {
+      width: 220px; background: #fff; border-right: 1px solid #ddd;
+      display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto;
+    }
+    .sidebar .menu-title {
+      background: #f5f5f5; padding: 10px 16px; font-size: 13px;
+      color: #666; border-bottom: 1px solid #e0e0e0; font-weight: bold;
+    }
+    .sidebar .menu-group { border-bottom: 1px solid #eee; }
+    .sidebar .menu-group-title {
+      padding: 10px 16px; font-size: 14px; color: #444; cursor: pointer;
+      display: flex; align-items: center; gap: 8px; font-weight: bold;
+    }
+    .sidebar .menu-group-title:hover { background: #fef5f0; color: #ec4e00; }
+    .sidebar .menu-item {
+      padding: 8px 16px 8px 36px; font-size: 13px; color: #555;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .sidebar .menu-item:hover, .sidebar .menu-item.active {
+      background: #fef5f0; color: #ec4e00; border-left: 3px solid #ec4e00;
+    }
+    .sidebar .menu-item.active { font-weight: bold; }
+
+    /* 右側內容 */
+    .content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* 分頁標籤 */
+    .tab-bar {
+      height: 38px; background: #fff; border-bottom: 1px solid #ddd;
+      display: flex; align-items: center; padding: 0 10px; gap: 4px; flex-shrink: 0;
+    }
+    .tab-bar .tab {
+      padding: 6px 16px; background: #f0f0f0; border: 1px solid #ddd;
+      font-size: 13px; cursor: pointer; border-radius: 3px 3px 0 0; color: #555;
+    }
+    .tab-bar .tab.active { background: #fff; border-bottom: 1px solid #fff; color: #ec4e00; font-weight: bold; }
+
+    /* 主內容區 */
+    .content-body { flex: 1; overflow-y: auto; padding: 16px; }
+
+    /* 工具列 */
+    .toolbar {
+      background: #fff; border: 1px solid #ddd; padding: 8px 12px;
+      display: flex; align-items: center; gap: 8px; margin-bottom: 12px; border-radius: 2px;
+    }
+    .btn {
+      padding: 5px 14px; font-size: 13px; border: 1px solid #ddd;
+      background: #f5f5f5; cursor: pointer; border-radius: 2px; display: flex;
+      align-items: center; gap: 4px; transition: all 0.15s;
+    }
+    .btn:hover { background: #e8e8e8; }
+    .btn.btn-primary { background: #ec4e00; color: #fff; border-color: #ec4e00; }
+    .btn.btn-primary:hover { background: #d44400; }
+    .btn.btn-success { background: #5cb85c; color: #fff; border-color: #5cb85c; }
+    .search-box {
+      display: flex; align-items: center; gap: 6px; margin-left: auto;
+    }
+    .search-box input {
+      border: 1px solid #ddd; padding: 5px 10px; font-size: 13px;
+      border-radius: 2px; width: 160px; outline: none;
+    }
+    .search-box input:focus { border-color: #ec4e00; }
+
+    /* 資料表 */
+    .data-table { width: 100%; border-collapse: collapse; background: #fff; font-size: 13px; }
+    .data-table th {
+      background: #f5f5f5; padding: 10px 12px; text-align: left;
+      border: 1px solid #e0e0e0; color: #555; font-weight: bold;
+    }
+    .data-table td {
+      padding: 9px 12px; border: 1px solid #e8e8e8; color: #333;
+    }
+    .data-table tr:hover td { background: #fef5f0; }
+    .data-table .num-col { text-align: center; width: 50px; }
+    .badge {
+      display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 12px;
+    }
+    .badge-on { background: #e8f5e9; color: #2e7d32; }
+    .badge-off { background: #fce4ec; color: #c62828; }
+    .badge-yes { background: #e3f2fd; color: #1565c0; }
+    .badge-no { background: #f5f5f5; color: #757575; }
+
+    /* 分頁 */
+    .pagination {
+      display: flex; align-items: center; gap: 8px; padding: 12px 0;
+      font-size: 13px; color: #666;
+    }
+    .pagination .page-btn {
+      padding: 4px 10px; border: 1px solid #ddd; background: #fff;
+      cursor: pointer; border-radius: 2px;
+    }
+    .pagination .page-btn:hover { border-color: #ec4e00; color: #ec4e00; }
+    .pagination .page-info { margin: 0 8px; }
+
+    /* 底部 */
+    .footer {
+      height: 40px; background: #fff; border-top: 3px solid #ec4e00;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: #888; flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 頂部 -->
+<div class="header">
+  <div class="logo">🔐 信息管理系统</div>
+  <div class="user-info">
+    <span>👤 itlike</span>
+    <a href="index.html">注销</a>
+  </div>
+</div>
+
+<!-- 主體 -->
+<div class="main">
+
+  <!-- 左側選單 -->
+  <div class="sidebar">
+    <div class="menu-title">📋 菜单</div>
+
+    <div class="menu-group">
+      <div class="menu-group-title">📁 系统管理</div>
+      <div class="menu-item active" onclick="showTab('employee')">👥 员工管理</div>
+      <div class="menu-item" onclick="showTab('role')">🎭 角色权限管理</div>
+      <div class="menu-item" onclick="showTab('menu')">📂 菜单管理</div>
+    </div>
+
+    <div class="menu-group">
+      <div class="menu-group-title">📁 系统管理2</div>
+      <div class="menu-item" onclick="showTab('aa')">🗂 aa</div>
+    </div>
+
+    <div style="margin-top: auto; padding: 16px; font-size: 12px; color: #aaa; border-top: 1px solid #eee; text-align:center;">
+      ⚡ 靜態展示版
+    </div>
+  </div>
+
+  <!-- 右側內容 -->
+  <div class="content">
+
+    <!-- 分頁標籤 -->
+    <div class="tab-bar">
+      <div class="tab active" id="tab-employee">员工管理 ✕</div>
+    </div>
+
+    <!-- 內容主體 -->
+    <div class="content-body">
+
+      <!-- 工具列 -->
+      <div class="toolbar">
+        <button class="btn btn-primary">➕ 添加</button>
+        <button class="btn">✏️ 编辑</button>
+        <button class="btn">🚫 离职</button>
+        <button class="btn">🗑 删除</button>
+        <div class="search-box">
+          <input type="text" placeholder="请输入关键字">
+          <button class="btn">🔍 查询</button>
+        </div>
+        <button class="btn btn-success">📤 Excel导出</button>
+        <button class="btn">📥 Excel导入</button>
+      </div>
+
+      <!-- 資料表 -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="num-col">#</th>
+            <th>姓名</th>
+            <th>入职时间</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <th>部门</th>
+            <th>状态</th>
+            <th>管理员</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num-col">1</td><td>Beesuperman</td><td>2025-07-11</td><td>12345678901</td><td>1234567890@gmail.com</td><td>人事部</td><td><span class="badge badge-off">离职</span></td><td><span class="badge badge-no">否</span></td></tr>
+          <tr><td class="num-col">2</td><td>Beesuperman</td><td>2025-09-09</td><td>12345678901</td><td>274527033@fox.com</td><td>人事部</td><td><span class="badge badge-on">在职</span></td><td><span class="badge badge-no">否</span></td></tr>
+          <tr><td class="num-col">3</td><td>Beesuperman</td><td>2025-07-15</td><td>1234567890</td><td>admin@test.com</td><td>人事部</td><td><span class="badge badge-on">在职</span></td><td><span class="badge badge-yes">是</span></td></tr>
+          <tr><td class="num-col">4</td><td>LULU</td><td>2025-06-05</td><td>1234567890</td><td>274527033@fox.com</td><td>人事部</td><td><span class="badge badge-on">在职</span></td><td><span class="badge badge-yes">是</span></td></tr>
+          <tr><td class="num-col">5</td><td>SUCCESS_AT_LAST</td><td>2025-10-06</td><td>12345678901</td><td>wyy66631@gmail.com</td><td>人事部</td><td><span class="badge badge-on">在职</span></td><td><span class="badge badge-yes">是</span></td></tr>
+          <tr><td class="num-col">6</td><td>LULU</td><td>2025-12-17</td><td>1234567890</td><td>wyy66631@gmail.com</td><td>财务部</td><td><span class="badge badge-on">在职</span></td><td><span class="badge badge-yes">是</span></td></tr>
+          <tr><td class="num-col">7</td><td>LULU</td><td>2025-12-17</td><td>1234567890</td><td>wyy66631@gmail.com</td><td>财务部</td><td><span class="badge badge-off">离职</span></td><td><span class="badge badge-yes">是</span></td></tr>
+          <tr><td class="num-col">8</td><td>LULU</td><td>2025-12-17</td><td>1234567890</td><td>wyy66631@gmail.com</td><td>财务部</td><td><span class="badge badge-off">离职</span></td><td><span class="badge badge-yes">是</span></td></tr>
+          <tr><td class="num-col">9</td><td>LOG_FIX_TEST</td><td>2025-10-21</td><td>1234567890</td><td>wyy66631@gmail.com</td><td>技术部</td><td><span class="badge badge-on">在职</span></td><td><span class="badge badge-yes">是</span></td></tr>
+          <tr><td class="num-col">10</td><td>LOG_FIX_TEST</td><td>2025-10-21</td><td>1234567890</td><td>wyy66631@gmail.com</td><td>技术部</td><td><span class="badge badge-on">在职</span></td><td><span class="badge badge-yes">是</span></td></tr>
+        </tbody>
+      </table>
+
+      <!-- 分頁 -->
+      <div class="pagination">
+        <select style="border:1px solid #ddd; padding:4px; font-size:13px;">
+          <option>10</option><option>20</option><option>50</option>
+        </select>
+        <button class="page-btn">«</button>
+        <button class="page-btn">‹</button>
+        <span class="page-info">第 <strong>1</strong> 页 共4页</span>
+        <button class="page-btn">›</button>
+        <button class="page-btn">»</button>
+        <button class="page-btn">🔄</button>
+        <span style="margin-left: auto;">显示1到10，共40记录</span>
+      </div>
+
+    </div><!-- /content-body -->
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- 底部 -->
+<div class="footer">權限管理</div>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+    event.target.classList.add('active');
+    const tabBar = document.querySelector('.tab-bar');
+    const labels = { employee:'员工管理', role:'角色权限管理', menu:'菜单管理', aa:'aa' };
+    tabBar.innerHTML = `<div class="tab active">${labels[name]} ✕</div>`;
+  }
+</script>
+</body>
+</html>

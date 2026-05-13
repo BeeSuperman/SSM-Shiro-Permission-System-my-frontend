@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>用户权限管理系统 - 登录</title>
+  <link href="static/css/base.css" rel="stylesheet">
+  <link href="static/css/login.css" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f1f1f1; }
+
+    /* 頂部導覽 */
+    .login-hd {
+      position: relative; height: 94px; background: #fff;
+      line-height: 94px; min-width: 100%; border-bottom: 1px solid #e5e5e5;
+      display: flex; align-items: center; padding: 0 40px;
+    }
+    .login-hd .sys-name {
+      font-size: 22px; color: #333; font-weight: bold; margin-left: 16px;
+    }
+    .login-hd .logo-text {
+      font-size: 26px; font-weight: bold; color: #ec4e00; letter-spacing: 2px;
+    }
+    .split { display: inline-block; width: 1px; height: 32px; background: #ccc; margin: 0 14px; vertical-align: middle; }
+
+    /* 主體區 */
+    .login-bd {
+      display: flex; align-items: stretch; min-height: calc(100vh - 94px);
+      background: #f1f1f1;
+    }
+
+    /* 左側圖片區 */
+    .lg-poster {
+      flex: 1;
+      background: url('static/images/loginbg.png') center center no-repeat;
+      background-size: contain;
+      min-height: 480px;
+    }
+
+    /* 右側登入框 */
+    .lg-zone {
+      width: 460px; display: flex; align-items: center; justify-content: center;
+      padding: 40px 30px;
+    }
+    .lg-box {
+      width: 380px; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      border-radius: 4px; padding-bottom: 30px; position: relative;
+    }
+    .lg-box .line-bar {
+      height: 6px; display: flex; border-radius: 4px 4px 0 0; overflow: hidden;
+    }
+    .lg-box .line-bar .line-y { width: 33%; background: #ff9d02; }
+    .lg-box .line-bar .line-g { flex: 1; background: #ec4e00; }
+
+    .lg-label { padding: 24px 30px 16px; }
+    .lg-label h4 {
+      font-size: 22px; color: #333; border-left: 4px solid #ec4e00;
+      padding-left: 12px; font-weight: bold;
+    }
+
+    .input-item {
+      display: flex; align-items: center; margin: 0 30px 20px;
+      border: 1px solid #adadad; height: 44px; border-radius: 2px;
+    }
+    .input-item i {
+      width: 44px; text-align: center; color: #888; font-size: 18px; flex-shrink: 0;
+    }
+    .input-item input {
+      border: none; outline: none; flex: 1; font-size: 15px;
+      height: 100%; background: transparent; color: #333;
+    }
+
+    .enter { padding: 10px 30px 0; }
+    .enter a {
+      display: block; text-align: center; background: #292323; color: #fff;
+      height: 48px; line-height: 48px; font-size: 16px; font-weight: bold;
+      border-radius: 2px; text-decoration: none; letter-spacing: 4px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .enter a:hover { background: #ec4e00; }
+
+    /* 登入提示 */
+    .demo-tip {
+      text-align: center; margin-top: 16px; color: #999; font-size: 13px;
+    }
+    .demo-tip span { color: #ec4e00; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<!-- 頂部 -->
+<div class="login-hd">
+  <span class="logo-text">🔐 权限管理系统</span>
+  <span class="split"></span>
+  <span class="sys-name">用户权限管理系统</span>
+</div>
+
+<!-- 主體 -->
+<div class="login-bd">
+  <!-- 左側展示圖 -->
+  <div class="lg-poster"></div>
+
+  <!-- 右側登入框 -->
+  <div class="lg-zone">
+    <div class="lg-box">
+      <div class="line-bar">
+        <div class="line-y"></div>
+        <div class="line-g"></div>
+      </div>
+      <div class="lg-label"><h4>用户登录</h4></div>
+
+      <div class="input-item">
+        <i>👤</i>
+        <input type="text" value="itlike" placeholder="请输入用户名">
+      </div>
+      <div class="input-item">
+        <i>🔒</i>
+        <input type="password" value="1234" placeholder="请输入密码">
+      </div>
+      <div class="enter">
+        <a href="main.html">点击登录</a>
+      </div>
+      <p class="demo-tip">
+        ⚡ 靜態展示版 — 帳號：<span>itlike</span> 密碼：<span>1234</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
