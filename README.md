@@ -4,7 +4,7 @@
 
 ## 🔗 線上預覽
 
-👉 [點我查看展示頁面](https://你的GitHub帳號.github.io/PromissionPro-demo/)
+👉 [點我查看展示頁面](https://beesuperman.github.io/SSM-Shiro-Permission-System-my-frontend/)
 
 ## 📸 功能展示
 
